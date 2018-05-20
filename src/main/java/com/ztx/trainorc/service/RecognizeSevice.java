@@ -5,9 +5,9 @@ package com.ztx.trainorc.service;
  */
 public interface RecognizeSevice {
     /**
-     * 获取识别结果
-     *
+     * 获取图片识别结果
+     * @param picInfo
      * @return
      */
-    String getRecognizeResult();
+    String getRecognizeResult(String picInfo);
 }

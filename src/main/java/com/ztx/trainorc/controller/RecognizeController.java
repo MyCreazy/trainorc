@@ -1,5 +1,6 @@
 package com.ztx.trainorc.controller;
 
+import com.ztx.trainorc.service.impl.RecognizeServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -25,12 +26,13 @@ public class RecognizeController {
      * 获取识别结果
      * @return
      */
-    @ApiOperation(value = "火车票识别",notes = "火车票识别",httpMethod = "GET")
+    @ApiOperation(value = "火车票识别",notes = "火车票识别")
     @PostMapping("/trainresult")
     public String getRecognizeResult(@RequestBody String picInfo) {
         String result = "识别成功";
         try
         {
+            new RecognizeServiceImpl().getRecognizeResult("");
             LOGGER.error("DFDD");
         }
         catch (Exception ex)
