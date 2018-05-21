@@ -6,31 +6,12 @@ import javax.activation.MimetypesFileTypeMap;
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.*;
-import java.util.Iterator;
-import java.util.Map;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLConnection;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
-import java.util.zip.GZIPInputStream;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
 
 /**
  * java的http请求
@@ -40,16 +21,17 @@ public class JavaHttpRequest {
 
     public String postRequestOne(String urlStr,boolean isUseProxy) throws NoSuchProviderException, NoSuchAlgorithmException, KeyManagementException, IOException {
         URL url = null;
-        HttpsURLConnection conn = null;
+        HttpURLConnection conn = null;
         try {
-            url = new URL(null, urlStr, new sun.net.www.protocol.https.Handler());
+            //url = new URL(null, urlStr, new sun.net.www.protocol.https.Handler());
+            url = new URL(urlStr);
             if (isUseProxy) {
                 //创建本地代理用于抓数据监测
                 InetSocketAddress addr = new InetSocketAddress("127.0.0.1", 80);
                 Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
-                conn = (HttpsURLConnection) url.openConnection(proxy);
+                conn = (HttpURLConnection) url.openConnection(proxy);
             } else {
-                conn = (HttpsURLConnection) url.openConnection();
+                conn = (HttpURLConnection) url.openConnection();
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -58,7 +40,7 @@ public class JavaHttpRequest {
         }
 
 
-        //// 使用HTTPS请求，那么则需要证书等相关信息
+      /*  //// 使用HTTPS请求，那么则需要证书等相关信息
         SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
         TrustManager[] tm = {new HttpX509Manager()};
         // 初始化
@@ -73,18 +55,18 @@ public class JavaHttpRequest {
             }
         });
 
-        conn.setSSLSocketFactory(ssf);
+        conn.setSSLSocketFactory(ssf);*/
 //自己生一个boundary
         String boundary = UUID.randomUUID().toString().replace("-", "");
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
 //指定Content-Type为multipart/form-data，并且指定一下boundary
         conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+        conn.setRequestProperty("Accept-Encoding","gzip,deflate,sdch");
+        /*conn.setReadTimeout(5000);
+        conn.setConnectTimeout(5000);*/
 
-        conn.setReadTimeout(5000);
-        conn.setConnectTimeout(5000);
-
-        File file = new File("E:\\vv.jpg");
+        File file = new File("/Users/tangjuhong/test/test.png");
         InputStream is = new FileInputStream(file);
         OutputStream os = conn.getOutputStream();
 

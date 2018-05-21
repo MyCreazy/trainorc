@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 图像识别服务实现层
@@ -31,7 +29,8 @@ public class RecognizeServiceImpl implements RecognizeSevice {
     public  String getRecognizeResult(String picInfo)
     {
         String result="";
-        ////先测试，从本地加载图片
+        String url = "http://api.ocr.space/parse/image";
+      /*  ////先测试，从本地加载图片
         String url = "https://api.ocr.space/parse/image";
         String fileName = "E:\\vv.jpg";
         Map<String, String> textMap = new HashMap<String, String>();
@@ -41,9 +40,9 @@ public class RecognizeServiceImpl implements RecognizeSevice {
         //文件：设置file的name，路径
         Map<String, String> fileMap = new HashMap<String, String>();
         fileMap.put("upfile", fileName);
-        String contentType = "";//image/png
+        String contentType = "";//image/png*/
         try {
-            new JavaHttpRequest().postRequestOne(url,true);
+            new JavaHttpRequest().postRequestOne(url,false);
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
