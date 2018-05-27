@@ -21,17 +21,17 @@ public class JavaHttpRequest {
 
     public String postRequestOne(String urlStr,boolean isUseProxy) throws NoSuchProviderException, NoSuchAlgorithmException, KeyManagementException, IOException {
         URL url = null;
-        HttpURLConnection conn = null;
+        HttpsURLConnection conn = null;
         try {
-            //url = new URL(null, urlStr, new sun.net.www.protocol.https.Handler());
-            url = new URL(urlStr);
+            url = new URL(null, urlStr, new sun.net.www.protocol.https.Handler());
+          //  url = new URL(urlStr);
             if (isUseProxy) {
                 //创建本地代理用于抓数据监测
                 InetSocketAddress addr = new InetSocketAddress("127.0.0.1", 80);
                 Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
-                conn = (HttpURLConnection) url.openConnection(proxy);
+                conn = (HttpsURLConnection) url.openConnection(proxy);
             } else {
-                conn = (HttpURLConnection) url.openConnection();
+                conn = (HttpsURLConnection) url.openConnection();
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -40,7 +40,7 @@ public class JavaHttpRequest {
         }
 
 
-      /*  //// 使用HTTPS请求，那么则需要证书等相关信息
+       //// 使用HTTPS请求，那么则需要证书等相关信息
         SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
         TrustManager[] tm = {new HttpX509Manager()};
         // 初始化
@@ -55,23 +55,25 @@ public class JavaHttpRequest {
             }
         });
 
-        conn.setSSLSocketFactory(ssf);*/
+        conn.setSSLSocketFactory(ssf);
 //自己生一个boundary
         String boundary = UUID.randomUUID().toString().replace("-", "");
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
 //指定Content-Type为multipart/form-data，并且指定一下boundary
-        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundaryLi87uliDQ2gRhMO5");
         conn.setRequestProperty("Accept-Encoding","gzip,deflate,sdch");
+        conn.setRequestProperty("Accept","application/json, text/javascript, */*; q=0.01");
+        conn.setRequestProperty("Referer","http://www.ocrmaker.com/");
         /*conn.setReadTimeout(5000);
         conn.setConnectTimeout(5000);*/
 
-        File file = new File("/Users/tangjuhong/test/test.png");
+        File file = new File("E:\\vv.jpg");
         InputStream is = new FileInputStream(file);
         OutputStream os = conn.getOutputStream();
 
 //注意注意：这里先发两个横杠哦！
-        os.write(("–" + boundary + "\r\n").getBytes());
+        os.write(("------WebKitFormBoundaryLi87uliDQ2gRhMO5"+"\r\n").getBytes());
         os.write(("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"\r\n").getBytes());
         os.write("Content-Type: image/jpeg\r\n\r\n".getBytes());
 

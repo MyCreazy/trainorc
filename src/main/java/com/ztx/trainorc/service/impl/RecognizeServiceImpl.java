@@ -1,10 +1,15 @@
 package com.ztx.trainorc.service.impl;
 
 import com.ztx.trainorc.Utils.JavaHttpRequest;
+import com.ztx.trainorc.api.ORC;
+import com.ztx.trainorc.model.vo.JsonRootBean;
 import com.ztx.trainorc.service.RecognizeSevice;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.io.File;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -16,43 +21,48 @@ import java.security.NoSuchProviderException;
 @Service
 public class RecognizeServiceImpl implements RecognizeSevice {
     /**
+     * orc对象
+     */
+    @Autowired
+    private ORC orc;
+
+    /**
      * java请求对象
      */
     @Autowired
     private JavaHttpRequest javaHttpRequest;
 
     /**
+     * orc功能对象
+     */
+    @Autowired
+    private ORC orcFunction;
+
+    /**
+     * 转换图片
+     *
+     * @param localImagePath
+     * @return
+     */
+    public String getImageBase64(String localImagePath) {
+        String result = "";
+        File file = new File(localImagePath);
+        result = orcFunction.encodeImgageToBase64(file);
+        return result;
+    }
+
+    /**
      * 获取图片结果
+     *
      * @param picInfo
      * @return
      */
-    public  String getRecognizeResult(String picInfo)
-    {
-        String result="";
-        String url = "http://api.ocr.space/parse/image";
-      /*  ////先测试，从本地加载图片
-        String url = "https://api.ocr.space/parse/image";
-        String fileName = "E:\\vv.jpg";
-        Map<String, String> textMap = new HashMap<String, String>();
-        //普通参数：可以设置多个input的name，value
-        textMap.put("name", "file");
-        textMap.put("filename", "vv.jpg");
-        //文件：设置file的name，路径
-        Map<String, String> fileMap = new HashMap<String, String>();
-        fileMap.put("upfile", fileName);
-        String contentType = "";//image/png*/
-        try {
-            new JavaHttpRequest().postRequestOne(url,false);
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // new  JavaHttpRequest().postRequest(url, textMap, fileMap,contentType,true);
+    public String getRecognizeResult(String picInfo) {
+        String result = "";
+        String jsonStr = orc.getRecognizeResult(picInfo);
+        //转换为对象
+     /*   JSONObject obj =  new JSONObject().fromObject(jsonStr);
+        JsonRootBean jb = (JsonRootBean) JSONObject.toBean(obj, JsonRootBean.class);*/
         return result;
     }
 }

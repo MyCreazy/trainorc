@@ -10,4 +10,11 @@ public interface RecognizeSevice {
      * @return
      */
     String getRecognizeResult(String picInfo);
+
+    /**
+     * 转换图片
+     * @param localImagePath
+     * @return
+     */
+    String getImageBase64(String localImagePath);
 }
