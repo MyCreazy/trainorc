@@ -3,7 +3,7 @@
     <!-- 属性设置 -->
     <property name="cmpName" value="ztx"/>
     <property name="appName" value="trainorc"/>
-    <property name="logPath" value="/Users/tangjuhong/test/logs/trainorc"/>
+    <property name="logPath" value="/Users/tangjuhong/test/logs/"/>
     <!-- 应用名称 -->
     <contextName>${appName}</contextName>
     <!-- 控制台输出 -->
@@ -17,10 +17,13 @@
         <encoder>
             <pattern>${cmpName}#-#${appName}#-#%d{yyyy-MM-dd HH:mm:ss.SSS}#-#[%thread]#-#%-5level#-#%logger{35}#-#%msg%n</pattern>
         </encoder>
-        <springProfile name="test,dev">
+<!--        <springProfile name="test,dev">
             <file>logs/${appName}.log</file>
-        </springProfile>
-        <springProfile name="prod">
+        </springProfile>-->
+      <!--  <springProfile name="prod">
+            <file>${logPath}/${appName}.log</file>
+        </springProfile>-->
+        <springProfile>
             <file>${logPath}/${appName}.log</file>
         </springProfile>
         <!-- rollingPolicy：TimeBasedRollingPolicy、FixedWindowRollingPolicy -->

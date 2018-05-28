@@ -7,12 +7,33 @@ public class MRegnizeResponse_VO {
     /**
      * 识别结果标志
      */
-    private EnumResultFlag result=EnumResultFlag.success;
+    private EnumResultFlag result=EnumResultFlag.fail;
 
     /**
      * 火车票信息
      */
     private  MTicketContent_VO ticketInfo=null;
+
+    /**
+     * 描述识别结果
+     */
+    private  String resultDes="识别成功";
+
+    /**
+     * 获取识别结果描述
+     * @return
+     */
+    public String getResultDes() {
+        return resultDes;
+    }
+
+    /**
+     * 设置识别结果描述
+     * @param resultDes
+     */
+    public void setResultDes(String resultDes) {
+        this.resultDes = resultDes;
+    }
 
     /**
      * 获取识别结果
