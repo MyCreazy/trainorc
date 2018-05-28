@@ -168,6 +168,17 @@ public class RecognizeServiceImpl implements RecognizeSevice {
                     }
                 }
 
+                //匹配检票口
+                String checkPassport = this.findSpecialValue(wordResultList, "检票");
+                if(checkPassport!=null&&!"".equals(checkPassport))
+                {
+                    String[] checkArray= checkPassport.split("\\:");
+                    if(checkArray!=null&&checkArray.length>1)
+                    {
+                        ticketInfo.setCheckTicket(checkArray[1]);
+                    }
+                }
+
                 //有可能座位号分开，这里再判断一下座位号
                 String seatStr = this.findSpecialValue(wordResultList, "车,号");
                 if (seatStr != null && !"".equals(seatStr) && !startDateAndSeat.equals(seatStr)) {
