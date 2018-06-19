@@ -186,6 +186,11 @@ public class RecognizeServiceImpl implements RecognizeSevice {
                     ticketInfo.setSeatNumber(seatStr);
                 }
             }
+            else
+            {
+                ////未拿到json字符串也认为是失败的
+                ismatchSuccess=false;
+            }
 
             if (ismatchSuccess) {
                 responseVo.setResult(EnumResultFlag.success);
@@ -197,8 +202,9 @@ public class RecognizeServiceImpl implements RecognizeSevice {
         }
         catch (Exception ex)
         {
+            responseVo.setResult(EnumResultFlag.fail);
             ////发生异常
-            responseVo.setResultDes("识别失败,发生异常");
+            responseVo.setResultDes("识别失败,发生异常："+ex.getMessage());
         }
 
         result = JSON.toJSONString(responseVo);
