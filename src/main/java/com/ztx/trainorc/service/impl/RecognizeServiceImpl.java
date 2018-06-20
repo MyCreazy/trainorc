@@ -128,7 +128,7 @@ public class RecognizeServiceImpl implements RecognizeSevice {
         responseVo.setTicketInfo(ticketInfo);
         try {
             String jsonStr = orc.getRecognizeResult(picInfo);
-            System.out.println("识别的json字符串:" + jsonStr);
+            System.out.println("识别的原始json字符串:" + jsonStr);
             JsonRootBean jsonobj = JSON.parseObject(jsonStr, JsonRootBean.class);
             ////解析对象，转换为所需对象
             List<WordsResult> wordResultList = jsonobj.getWords_result();
@@ -161,6 +161,12 @@ public class RecognizeServiceImpl implements RecognizeSevice {
                     String[] arrayDateAndSeat = startDateAndSeat.split("\\开");
                     if (arrayDateAndSeat != null && arrayDateAndSeat.length > 0) {
                         String dataStr = arrayDateAndSeat[0].replace("年", "-").replace("月", "-").replace("日", " ");
+                        ////判断一下冒号是否被识别为分号
+                        if(dataStr.contains(";"))
+                        {
+                            dataStr=dataStr.replace(";",":");
+                        }
+
                         ticketInfo.setStartDate(dataStr);
                         if (arrayDateAndSeat.length == 2) {
                             ticketInfo.setSeatNumber(arrayDateAndSeat[1]);
