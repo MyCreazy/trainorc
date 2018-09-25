@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 /**
+ * 用于写日志很方便
  * Created with tjh.
  * Date: 2018/9/25
  * Time: 上午10:56
